@@ -168,12 +168,6 @@ class Level:
 
     def __init__(self):
         """ Inicialitzadora de la classe Level """
-        # self.func_name: str = ""
-        # """Nom de la funció que cridem"""
-        # self.params: list[str] = []
-        # """Nom dels paràmetres que cridem"""
-        # self.code: Any = None
-        # """Codi que truquem quan fem self.visit()"""
         self.symbols: dict[str, Any] = {}
         """Taula de símbols que té el nivell, la crida d'aquesta funció"""
 
@@ -188,7 +182,6 @@ class Heap:
         """
         Inicialització de la classe Heap
         """
-        # Creo que ambos heap y symbols son lo mismo xD
         self._heap: list[Level] = []
         """Estructura de dades en forma de pila que emmagatzema les variables de cada procediment. heap s del tipus list(dict())"""
         self._top: int = -1
@@ -211,9 +204,6 @@ class Heap:
                 return self._exists_in_heap(key, level - 1)
         return -1
 
-    # TENGO QUE REHACER ESTA FUNCIÓN PARA HACERLA MÁS ELEGANTE (Hay que tener
-    # en cuenta los nombres de los parámetros y los nombres de las variables
-    # dadas)
     def push(self, d: dict):
         """
         Afegeix un nou diccionari per la crida d'un procediment, i emagatzema els paràmetres (en forma de llista de parells) donats al diccionari
@@ -227,16 +217,15 @@ class Heap:
         """
         Elimina el diccionari actual i disminueix en una unitat l'índex de la pila, perquè ha tornat d'un procediment
         """
-        self._heap.pop()        # No sé si tengo que recuperar esta información
+        self._heap.pop()
         self._top -= 1
         return
 
-    # TENGO QUE REHACER ESTA FUNCIÓN
     def add(self, key: str, value: Any):
         """
         Afegeix o modifica una variable al diccionari actual, del tipus (key, value)
         """
-        self._heap[self._top].symbols[key] = value    # Tengo que mirar aquellas variables que sean lista, porque se deben pasar por referencia
+        self._heap[self._top].symbols[key] = value    
 
     def get(self, key: str):
         """
@@ -244,25 +233,19 @@ class Heap:
         Si no existeix una variable amb aquest nom en el mateix nivell però sí en un altre (crida anterior), retorna una excepció
         """
         if self._exists_in_top(key) and self._exists_in_heap(
-                key, self._top - 1):  # Variables por referencia y parámetros
-            # if isinstance(self._heap[self._top].symbols[key], Pointer):
-            #     level = self._heap[self._top].symbols[key].get_pointer()
-            #     return self._heap[level].symbols[key]
-            # else:
+                key, self._top - 1):
             return self._heap[self._top].symbols[key]
-        # Variables declaradas en la rutina (TENGO QUE MIRAR ESTO)
+
         elif self._exists_in_top(key) and not self._exists_in_heap(key, self._top - 1):
             return self._heap[self._top].symbols[key]
-        # Variables fuera de rango
+
         elif not self._exists_in_top(key) and self._exists_in_heap(key, self._top - 1):
             raise Exception(
                 "The given variable: " +
                 str(key) +
                 " is not in scope")
-        else:   # Variable nueva
-            # Añadir variable nueva con valor por defecto 0 -> Integer
+        else:   
             self.add(key, 0)
-            # Retornamos el valor de la nueva variable (valor por defecto)
             return 0
 
 
@@ -362,7 +345,7 @@ class TreeVisitor(JSBachVisitor):
         func_name = str(l[0].getText())
         if func_name not in self.func_set.keys():
             raise Exception("The called function does not exist")
-        func_info = self.func_set[func_name]  # Info about function declaration
+        func_info = self.func_set[func_name] 
         if num_params != len(func_info["params"]):
             raise Exception(
                 "The number of parameters given is not coherent with the definition")
@@ -378,7 +361,7 @@ class TreeVisitor(JSBachVisitor):
             key = info["params"][i]
             value = self.visit(l[i + 1])
             info["symbols"][key] = value
-        self.heap.push(info["symbols"])     # Antes era (info)
+        self.heap.push(info["symbols"])
         self.visit(info["code"])
         self.heap.pop()
 
@@ -496,31 +479,24 @@ class TreeVisitor(JSBachVisitor):
             self.visit(l[0])
 
     # Visit a parse tree produced by JSBachParser#while_stat.
-    # Creo que se haría así
     def visitWhile_stat(self, ctx: JSBachParser.While_statContext):
         """
         Visitador que executa un bloc del tipus 'while condició |: bloc_statements :|', on s'evalua la condició cada cop que arriba al començament
         del bucle i, si retorna 1, executa el bloc; no executa el bloc altrament
         """
-        # El primer hijo es "WHILE", el segundo hijo es la condición, el
-        # tercero es abrir el bracket, el cuarto es el bloque y el quinto es
-        # cerrar el bracket
         l = list(ctx.getChildren())
-        cond = int(self.visit(l[1]))  # Condición booleana
+        cond = int(self.visit(l[1]))
         while cond == 1:
             self.visit(l[3])
             cond = int(self.visit(l[1]))
 
-    # Visit a parse tree produced by JSBachParser#if_stat.
     def visitIf_stat(self, ctx: JSBachParser.If_statContext):
         """
         Visitador que executa un bloc del tipus 'if condició |: bloc_statements :|', on s'evalua la condició quan arriba al començament
         del condicional i, si retorna 1, executa el bloc; no executa el bloc si retorna 0 altrament
         """
-        # El primer hijo sería "IF", el segundo la condición, el tercero abrir el bracket, y el último cerrar el bracket
-        # Lo que hay en medio [3..n-2] son los statements que hay que hacer
         l = list(ctx.getChildren())
-        cond = int(self.visit(l[1]))  # Condición booleana
+        cond = int(self.visit(l[1])) 
         if cond == 1:
             self.visit(l[3])
             return 1
@@ -532,8 +508,6 @@ class TreeVisitor(JSBachVisitor):
         Visitador que executa un bloc del tipus 'else |: bloc_statements :|', on s'executa el bloc d'statements si el bloc 'if' anterior
         a aquest else ha retornat 0 en la seva condició
         """
-        # El primer hijo sería "ELSE", el segundo abrir el bracket, y el último cerrar el bracket
-        # Lo que hay en medio [2..n-2] son los statements que hay que hacer
         l = list(ctx.getChildren())
         self.visit(l[2])
 
@@ -593,7 +567,6 @@ class TreeVisitor(JSBachVisitor):
         elif op == ">=":
             return 1 if condA >= condB else 0
         else:
-            # Esto no debería pasar nunca
             raise Exception("Binary operator not found")
 
     # Visit a parse tree produced by JSBachParser#ExprCond.
@@ -619,22 +592,18 @@ class TreeVisitor(JSBachVisitor):
         Visitador que rep un identificador i una expressió i assigna el valor resultant d'evaluar l'expressió en la variable donada
         """
         l = list(ctx.getChildren())
-        # Es de la forma ID <- Expresion
         id = str(l[0].getText())
         value = self.visit(l[2])
         self.heap.add(id, value)
 
-    # Implemented -> Version 0.2:
-    #   - El Read stat només accepta valors enters
     def visitRead_stat(self, ctx: JSBachParser.Read_statContext):
         """
         Visitador que rep una variable i, per entrada estàndard per terminal, l'usuari dóna el valor enter a assignar a la variable donada
         """
-
         l = list(ctx.getChildren())
         var = l[1].getText()
         try:
-            var_value = int(input())  # Value of the variable
+            var_value = int(input())
             self.heap.add(var, var_value)
         except BaseException:
             raise Exception("The given value is not a valid integer")
@@ -650,7 +619,6 @@ class TreeVisitor(JSBachVisitor):
         message += "}"
         return message
 
-    # TENGO QUE IMPLEMENTARLO DE NUEVO
     def visitWrite_stat(self, ctx: JSBachParser.Write_statContext):
         """
         Visitador que escriu per pantalla textos combinats amb expressions avaluades prèviament
@@ -681,7 +649,6 @@ class TreeVisitor(JSBachVisitor):
             self.notes.add_note(note)
 
     # Visit a parse tree produced by JSBachParser#PlayNoteId.
-
     def visitPlayNoteId(self, ctx: JSBachParser.PlayNoteIdContext):
         """
         Visitador que obté una nota o un identificador i afegeix el valor al final de la partitura
@@ -690,7 +657,7 @@ class TreeVisitor(JSBachVisitor):
         id = str(l[1].getText())
         if self.notes.value(id) is not None:
             self.notes.add_note(id)
-        else:   # Identificador
+        else:
             value = self.heap.get(id)
             if isinstance(value, list):
                 for val in value:
@@ -698,16 +665,12 @@ class TreeVisitor(JSBachVisitor):
             else:
                 self.notes.add_note(self.heap.get(id))
 
-    # Fully implemented
-
     def visitList_stat(self, ctx: JSBachParser.List_statContext):
         """
         Visitador que visita el node intermig de la visita a statements sobre llistes
         """
         self.visitChildren(ctx)
 
-    # Versio 0.1
-    #   - Creo que está full implementada pero tengo que mirar cositas
     def visitList_assig(self, ctx: JSBachParser.List_assigContext):
         """
         Visitador que assigna una llista d'enters o de notes a una variable
@@ -715,13 +678,9 @@ class TreeVisitor(JSBachVisitor):
         l = list(ctx.getChildren())
         id = str(l[0].getText())
         value = list(self.visit(l[2]))
-        # Lo segundo es una list, pero no sé si tengo que hacer un cast o no
         self.heap.add(id, value)
 
-    # Versió 0.1
-    # Debería funcionar aunque no lo he probado
     def visitList_cut(self, ctx: JSBachParser.List_cutContext):
-        # La regla es del estilo " 8< l[i] "
         """
         Visitador que rep un identificador i una expressió, que indiquen una posició en una llista, i elimina la posició de la llista donada, si i
         només si l'identificador és de tipus llista i vàlid, i l'índex es troba entre 1 i #llista
@@ -740,7 +699,6 @@ class TreeVisitor(JSBachVisitor):
             raise Exception(
                 "Something went wrong when removing a position from the list")
 
-    # Versió 0.1
     def visitList_add(self, ctx: JSBachParser.List_addContext):
         """
         Visitador que afegeix un valor al final d'una llista, que ve donada per un identificador
@@ -749,18 +707,16 @@ class TreeVisitor(JSBachVisitor):
         key = str(l[0].getText())
         value = self.heap.get(key)
         expr = self.visit(l[2])
-        if (isinstance(value, list)):  # Solo pueden ser enteros
+        if (isinstance(value, list)):
             value.append(expr)
         else:
             raise Exception("The types are incompatible.")
         self.heap.add(key, value)
 
-    # Esto no tiene más
     def visitList_expr(self, ctx: JSBachParser.List_exprContext):
         l = list(ctx.getChildren())
         return self.visit(l[0])
 
-    # Versió 0.1
     def visitList_decl(self, ctx: JSBachParser.List_declContext):
         """
         Visitador que obté una sequüència de valors i crea una llista a partir d'aquests
@@ -768,7 +724,6 @@ class TreeVisitor(JSBachVisitor):
         l = list(ctx.getChildren())
         decl = []
         ini_type = None
-        # Los valores van de 1 a n-2
         for i in range(1, len(l) - 1):
             decl.append(self.visit(l[i]))
             if i > 1:
@@ -777,7 +732,6 @@ class TreeVisitor(JSBachVisitor):
                     raise Exception("Types of values do not match")
         return decl
 
-    # Versió 0.1
     def visitList_length(self, ctx: JSBachParser.List_lengthContext):
         """
         Visitador que rep un identificador d'una llista i retorna el tamany d'aquesta (nombre d'elements)
@@ -790,7 +744,6 @@ class TreeVisitor(JSBachVisitor):
         else:
             raise Exception("The given variable is not a list")
 
-    # Solo podemos hacerlo servir cuando i es entero y 0<=i<len(value)
     def visitList_value_get(self, ctx: JSBachParser.List_value_getContext):
         """
         Visitador que rep un identificador d'una llista i una expressió, i retorna el valor de la llista que es troba en la posició que indica
@@ -813,16 +766,6 @@ class TreeVisitor(JSBachVisitor):
                     "The given expression fo the list value getter is out of bounds")
         else:
             raise Exception("The given identifier is not of list type")
-
-# MAIN
-
-
-"""
-COSAS A HACER:
-
-    - Eliminar lo que le mandamos al heap para hacer push (sólo hay que enviar la tabla de símbolos)
-
-"""
 
 
 def main():
@@ -848,20 +791,17 @@ def main():
     token_stream = CommonTokenStream(lexer)
     parser = JSBachParser(token_stream)
     tree = parser.root()
+    
     # print(tree.toStringTree(recog=parser))
 
     t.visit(tree)
 
-    ''' Parte del programa que creal el fichero lily y crea la partitura y toda la movida '''
-
     """ LILYPOND """
-
     lily_program: str = '\\version "2.22.1" \n\\score {\n\\absolute {\n\\tempo 4 = 120\n'
     lily_program += t.notes.get_partiture()
     lily_program += "\n}\n\\layout { }\n\\midi { }\n}"
 
     file_name: str = "./" + sys.argv[1].partition(".")[0]
-    # Creem / Obrim el fitxer amb el nom de l'arxiu
     lily_file = open(file_name + ".lily", 'w')
 
     lily_file.flush()
@@ -875,21 +815,13 @@ def main():
     lily_file.close()
 
     """ Generació dels fitxers """
-
-    # Aquí se generan los archivos .pdf y .midi
     subprocess.run(['lilypond', file_name + ".lily"])
-
     subprocess.run(["timidity", "-Ow", "-o", file_name + ".wav",
-                   file_name + ".midi"])  # Aquí se genera el .wav
-
+                   file_name + ".midi"])
     subprocess.run(["ffmpeg", "-i", file_name +
                     ".wav", "-codec:a", "libmp3lame", "-qscale:a 2", file_name +
-                    ".mp3"])  # Aquí se genera el .mp3
-
-    """ Fi de la generació dels fitxers"""
-
-    ''' FIN DEL JSBACK '''
-
+                    ".mp3"])
+    return
 
 # Main call
 main()

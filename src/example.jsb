@@ -1,6 +1,6 @@
 ~~~ Notes de Hanoi ~~~
 
-Hanoi |:
+Main |:
     src <- {C D E F G}
     dst <- {}
     aux <- {}
