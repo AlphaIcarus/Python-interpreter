@@ -1,0 +1,11 @@
+Excepciones a tratar (Que mencione Jordi):
+
+
+
+
+divisió per zero, 				DONE
+crida a procediment no definit, 
+repetició de procediment ja definit, 
+nombre de paràmetres incorrectes, 
+noms de paràmetres formals repetits, 
+accés a un índex inexistent d'una llista
