@@ -262,16 +262,6 @@ i
 
 Si ho voleu, també podeu fer que la música es toqui al final del programa.
 
-
-## Extensions
-
-Podeu extendre el llenguatge amb construccions del vostre gust, a condició de mantenir una compatibilitat estricta amb l'especificació donada (i ser barrocs). A més, cal que documenteu amb precisió les vostres extensions i que creeu programes que les provin i posin de manifest la seva utilitat.
-
-Per exemple, podríeu extendre JSBach amb accidentals (notes amb sostinguts o bemolls), operadors lògics, funcions que retornin valors, funcions d'ordre superior...
-
-Compte: Les extensions poden portar molta feina, consulteu-les abans amb el vostre professor.
-
-
 ## Llibreries
 
 Utilitzeu  `ANTLR` per escriure la gramàtica i l'intèrpret. Podeu utilitzar lliurament qualsevol llibreria estàndard de Python.
@@ -350,3 +340,5 @@ afplay exemple.mp3
 - ffmpeg: https://www.ffmpeg.org/
 
 ![Firma](firma.png)
+
+*Enunciat de l'exercici és propietat de Jordi Petit Silvestre, professor de Llenguatges de Programació a la Facultat d'Informàtica de Barcelona.*
