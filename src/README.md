@@ -12,7 +12,7 @@ La semàntica de les instruccions condicionals i de bucle són les habituals i e
 
 Les expressions poden ser sobre llistes o excloent les llistes. Aquelles operacions que són sobre llistes són la llargada de la llista (#) i l'obtenció d'un valor de la llista ([]). Aquelles expressions que no són sobre llistes són les operacions clàssiques sobre enters (suma, resta, divisió, multiplicació i mòdul), així com una nota, una variable o un número. Aquests tres últims sempre retorna el seu valor enter (en cas del número es retorna el propi número).
 
-Per acabar, tot allò que es troba entre "~~~" es considera comentari i s'evita el seu processament. També evitem els salts de línea i els tabs.
+Per acabar, tot allò que es troba entre ~~~ es considera comentari i s'evita el seu processament. També evitem els salts de línea i els tabs.
 
 ## Intèrpret
 
@@ -27,6 +27,13 @@ L'intèrpret consisteix en un programa que analitza l'AST resultant d'executar A
 També tenim els atributs start_func i start_argv, que defineixen el nom de la funció a executar la primera i els seus arguments, respectivament; i un diccionari per guardar les dades de les funcions declarades, anomenat func_set.
 
 El TreeVisitor comença per visitar l'arrel de l'AST. A partir d'aquesta, visitem cadascuna de les declaracions de les funcions i emmagatzemem totes les dades relacionades amb elles (nom de la funció, paràmetres formals, codi i taula de símbols). A continuació visitem la funció inicial ('Main' si no és definida). Una vegada executada la funció inicial, l'execució de la resta del programa ja és com l'esperada en qualsevol llenguatge de programació amb paradigma imperatiu.
+
+## Instruccions per l'execució
+
+El directori src ja consta de la gramàtica del llenguatge i el visitador de l'AST, per la qual cosa només s'ha d'executar l'script jsbach.py, donant com a paràmetre:
+
+1. El programa .jsb que es vol executar.
+2. (Opcional) La funció per on es vol començar l'execució. Si no es dóna aquesta, comença per la funció 'Main'.
 
 ## Execució de l'script
 
