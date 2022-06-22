@@ -2,21 +2,11 @@
 
 Aquesta pàgina descriu la pràctica de GEI-LP (edició 2021-2022 Q2). La vostra tasca és implementar un doble intèrpret per a un llenguatge de programació musical anomenat JSBach. La sortida d'aquest doble intèrpret serà una partitura i uns fitxers de so que reproduiràn la melodia descrita pel compositor.
 
-En diem un *doble* intèrpret perquè funciona en el sentit informàtic (interpreta un programa) i en el sentit musical (interpreta una peça de música).
-
-![JSBach](bach.png)
-
-
-## Bach
-
-Johann Sebastian Bach (1685-1750) fou un organista i compositor de música barroca. La seva fecunda obra es considera el cim de la música barroca, i una de les màximes expressions de la música universal, no tan sols per la seva profunditat intel·lectual, la seva perfecció tècnica i la seva bellesa artística, sinó també per la síntesi dels diversos estils de la seva època, del passat i per la seva incomparable extensió. És evident que, si hagués nascut a la nostra època, Bach programaria.
-
-
 ## Presentació del llenguatge JSBach
 
 JSBach és un llenguatge de programació orientat a la composició algorísmica. Amb JSBach s'utilitzen construccions imperatives per generar composicions que donen lloc a partitures que poden ser desades en diferents formats digitals.
 
-JSBach té moltes instruccions habituals, però utilitza una sintàxi que és, evidentment, barroca. Aquest és el *Hallo Bach*:
+JSBach té moltes instruccions habituals. Aquest és el *Hallo Bach*:
 
 ```
 ~~~ Kleines Program in JSBach ~~~
@@ -40,20 +30,6 @@ La primera instrucció del programa `<!> "Hallo Bach"` és una instrucció d'esc
 La segona instrucció del programa `<:> {B A C}` és una instrucció de reproducció (*play*). Aquesta instrucció afegeix la nota o la llista de notes donades a la partitura. Les llistes es donen entre claus amb els seus elements separats per espais. En aquest cas, els elements són les notes músicals `B`, `A` i `C`. JSBach utilitza el sistema de notació musical anglès,
 no el sistema de notació musical llatí ni el germànic. Així, aquest programa
 genera la melodia Si, La, Do.
-
-L'execució del programa anterior produïria la sortida del missatge `Hallo Bach` per pantalla.
-A més, generaria la partitura següent:
-
-![bac](bac.png)
-
-juntament amb aquests fitxers:
-
-- [🎼 bac.pdf](https://github.com/jordi-petit/lp-jsbach-2022/raw/main/bac.pdf)
-- [🎹 bac.midi](https://github.com/jordi-petit/lp-jsbach-2022/raw/main/bac.midi)
-- [🎵 bac.wav](https://github.com/jordi-petit/lp-jsbach-2022/raw/main/bac.wav)
-- [🎵 bac.mp3](https://github.com/jordi-petit/lp-jsbach-2022/raw/main/bac.mp3)
-
-Com es veu, la sortida de l'intèrpret són fitxers PDF, MIDI, WAV i MP3.
 
 JSBach permet escriure programes senzills utilitzant enters de forma semblant als LPs habituals. Per exemple, el programa següent mostra com llegir dos nombres i calcular el seu màxim comú divisor utilitzant l'algorisme d'Euclides amb dos procediments i entrada/sortida:
 
@@ -79,7 +55,7 @@ Euclides a b |:
 :|
 ```
 
-Les variables són locals a cada invocació de cada procediment i els procediments es poden comunicar a través de paràmetres. Els procediments llisten els noms dels seus paràmetres formals, però no inclouen els seus tipus. Els paràmetres es separen amb blancs, ~~com Déu mana~~ com en Haskell.
+Les variables són locals a cada invocació de cada procediment i els procediments es poden comunicar a través de paràmetres. Els procediments llisten els noms dels seus paràmetres formals, però no inclouen els seus tipus. Els paràmetres es separen amb blancs.
 
 Les variables no han de ser declarades, i poden ser de tipus enter o llistes. Les notes músicals, es veurà més endavant, no són altra cosa que constants per a enters.
 
@@ -138,14 +114,6 @@ HanoiRec n src dst aux |:
 :|
 ```
 
-La partitura que es genera en aquest programa és:
-
-![hanoi](hanoi.png)
-
-i aquí la podeu sentir:
-
-- [🎵 hanoi.mp3](https://github.com/jordi-petit/lp-jsbach-2022/raw/main/hanoi.mp3)
-
 Canviant o afegint més notes a la llista orígen es poden compondre noves peces, ben agradables de sentir!
 
 Al programa anterior es poden veure més operacions per a llistes:
@@ -160,10 +128,7 @@ Com que JSBach és per a músics, els índexs de les llistes comencen per 1.
 - `8< l[i]` retalla (elimina) l'`i`-èsim element d'una llista `l`.
 `8<` es coneix com *der Scherenoperator* (l'operador de tisores).
 
-  **Aclariment històric:** És fals que l'operador de tisores fos introduït per Anna Magdalena quan en Johann li volia fer un 13è fill.
-
-En JSBach els paràmetres funcionen com en Python (diguem): els enters es passen per còpia, les llistes es passen per referència.
-
+En JSBach els paràmetres funcionen com en Python: els enters es passen per còpia, les llistes es passen per referència.
 
 
 # Especificació de JSBach
@@ -252,7 +217,7 @@ d'accedir a variables d'altres procediments (només a través dels paràmetres).
 ## Notes
 
 JSBach proporciona uns noms que representen les notes blanques d'un piano (els sostinguts i bemolls es deixen per JSBach2). Les tres primeres notes són A0 (La0), B0 (Si0), C1 (Do1). Les tres darreres són A7 (La7), B7 (Si7), C8 (Do8). A https://ca.wikipedia.org/wiki/Freq%C3%BC%C3%A8ncies_del_piano teniu una explicació d'aquesta nomemclatura). A més, les notes C, D, E, F, G, A, B
-(sense número) son sinónims de C4 (Do central), D4, E4, F4, G4, A4, B4. Les notes de JSBach no són altra cosa que constants, de manera que A0 val 0, B0 val 1, ... i C8 val ???. Així, es pot transposar una nota una octava més amunt o més avall sumant-li o restant-li 7 unitats (sí, els músics són gent peculiar i de 7 notes en diuen una octava).
+(sense número) son sinónims de C4 (Do central), D4, E4, F4, G4, A4, B4. Les notes de JSBach no són altra cosa que constants, de manera que A0 val 0, B0 val 1, ... i C8 val ???. Així, es pot transposar una nota una octava més amunt o més avall sumant-li o restant-li 7 unitats.
 
 El procediment següent tocaria totes les tecles blanques del piano
 de més greu a més aguda (d'esquerra a dreta):
@@ -266,8 +231,6 @@ Alle_Schlüssel |:
     :|
 :|
 ```
-
-
 
 ## Errors
 
@@ -307,7 +270,6 @@ Podeu extendre el llenguatge amb construccions del vostre gust, a condició de m
 Per exemple, podríeu extendre JSBach amb accidentals (notes amb sostinguts o bemolls), operadors lògics, funcions que retornin valors, funcions d'ordre superior...
 
 Compte: Les extensions poden portar molta feina, consulteu-les abans amb el vostre professor.
-
 
 
 ## Llibreries
@@ -374,73 +336,6 @@ Finalment, els fitxers MP3 es poden reproduir amb molts reproductors de so. En u
 ```bash
 afplay exemple.mp3
 ```  
-
-
-# La vostra feina
-
-La vostra feina consisteix en
-implementar un (doble) intèrpret de JSBach.
-
-Per realitzar la vostra feina heu d'utilitzar Python3 i ANTLR4, tal com s'ha explicat a les classes de laboratori. Per generar les partitures, heu d'utilitzar el programa Lilipond. Per generar els WAV i MP3, els programes Timidity++ i ffmpeg.
-
-
-# Consells
-
-Per tal de fer la  pràctica, us recomanem de seguir aquests passos:
-
-1. Feu tots els exercicis de laboratori inclosos a https://gebakx.github.io/Python3/compiladors.html#1. Us serà molt útil, de debò.
-
-1. Escriviu la gramàtica de JSBach restringit a operacions amb enters (sense llistes ni notes ni instrucció de reproducció).
-
-1. Escriviu els visitadors per la gramàtica anterior per obtenir una primer versió de l'intèrpret.
-
-1. Exteneu la gramàtica amb notes i
-instrucció de reproducció.
-
-1. Escriviu els visitadors per la gramàtica anterior.
-Feu que al acabar generi el fitxer de Lilipond.
-
-1. Exteneu la gramàtica, ara amb les llistes i les seves instruccions associades.
-
-1. Escriviu els visitadors per la gramàtica anterior.
-Amb això ja tindreu tot l'intèrpret.
-
-1. Generar els fitxers d'audio al final.
-
-1. Escriviu el README.
-
-1. Si voleu, realitzeu extensions.
-
-Al llarg de tots els passos anteriors, aneu documentant tot allò que no sigui obvi.
-
-Deixeu la feina bruta a l'ANTLR: si feu una bona gramàtica, cadascun dels vostres visitadors serà molt curt i molt senzill. Si els vostres visitadors tenen molta lògica, retoqueu la gramàtica, introduint noves regles i/o etiquetes.
-
-Feu la pràctica "amb carinyo".
-
-# Lliurament
-
-Heu de lliurar la vostra pràctica al Racó. Només heu de lliurar un fitxer ZIP
-que, al descomprimir-se generi:
-
-- Un fitxer `README.md` que documenti el vostre projecte.
-|:- vegeu, per exemple, https://www.makeareadme.com/.
-
-- Un fitxer `jsbach.g4` amb la gramàtica del LP.
-
-- Un fitxer `jsbach.py` amb el programa de l'intèrpret, incloent els seus visitadors.
-
-- Si heu fet extensions, podeu afegir fitxers `test-*.jsb` com a exemples i jocs de proves.
-
-- Res més. De debò, res més. Tampoc directoris. Ni subdirectoris. Ni `.git`s, ni `.MACOS_XXX`... Res més, collons!
-
-Els vostres fitxers de codi en Python han de seguir les regles d’estı́l PEP8, tot i que podeu oblidar les restriccions sobre la llargada màxima de les lı́nies. Podeu utilitzar els paquets `pep8` o `autopep8` o http://pep8online.com/ per assegurar-vos que seguiu aquestes regles d’estı́l. L’ús de tabuladors en el codi queda prohibit (zero directe). Els vostres programes en JSBach han de seguir l'estil exposat en aquest document.
-
-El termini de lliurament és el **dimecres 8 de juny a les 13:00**.
-
-Per evitar problemes de còpies,
-no pengeu el vostre projecte en repositoris públics.
-
-
 
 # Referències
 
