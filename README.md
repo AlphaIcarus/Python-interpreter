@@ -341,4 +341,4 @@ afplay exemple.mp3
 
 ![Firma](firma.png)
 
-*Enunciat de l'exercici és propietat de Jordi Petit Silvestre, professor de Llenguatges de Programació a la Facultat d'Informàtica de Barcelona.*
+*L'enunciat de l'exercici és propietat de Jordi Petit Silvestre, professor de Llenguatges de Programació a la Facultat d'Informàtica de Barcelona.*
