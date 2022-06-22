@@ -7,7 +7,7 @@ root : func_decl+ EOF ;
 
 // Function declaration
 
-func_decl : FNC_NAME (ID)* L_BLOCK blck_stmt R_BLOCK ;    //Puede ser que haya que poner un salto de línea después de cada statement para que no haya problemas
+func_decl : FNC_NAME (ID)* L_BLOCK blck_stmt R_BLOCK ;
 
 ///// STATEMENT VARIANTS /////
 
@@ -30,10 +30,10 @@ statement : if_stat ( else_stat )?
     | read_stat
     | write_stat
     | play_stat           
-    | func_stat             // no estoy seguro de esto
+    | func_stat             
     | list_stat
     | assig_stat   
-    | expr                  // Esto lo permite python, poner operaciones en una línea y que no pete (DIRÍA DE QUITARLO)
+    | expr               
     ;
 */
 
@@ -66,20 +66,18 @@ func_stat : FNC_NAME expr* ; //params* ;
 ///// ASSIGNATIONS /////
 
 
-assig_stat : ID ASSIG expr ;    //Puede que necesite asociación por la derecha
+assig_stat : ID ASSIG expr ;
 
 
 ///// IN/OUT //////
 
 
-//Cuando hacemos read, leemos algo de terminal Y lo metemos en la variable que indica el programa, por lo que son dos cosas
-//FALTA POR IMPLEMENTAR LA ASIGNACIÓN A VARIABLE 
+read_stat : READ ID ;                               
 
-read_stat : READ ID ;                                // Internamente hay que hacer la asignación a variable con lo que entra por pantalla
+write_stat : WRITE ( PHRASE | expr )+ ;              
 
-write_stat : WRITE ( PHRASE | expr )+ ;               // No me permite imprimir más de una palabra
+//WORD : [a-zA-Z\u0080-\u00FF]+ ;  
 
-//WORD : [a-zA-Z\u0080-\u00FF]+ ;  // No estoy seguro de que esto funcione
 
 ///// PLAY STATEMENT /////
 
@@ -123,7 +121,6 @@ list_value_get : ID LCLAUDATOR expr RCLAUDATOR ;
 
 ///// EXPRESSIONS /////
 
-// Hay un problema con los paréntesis, hay que mirar cómo lo puedo hacer para que siempre admita un paréntesis en todo
 
 expr : LPAREN expr RPAREN   # ParentExpr
     | expr (MUL|DIV|MOD) expr   # MulDivModExpr
@@ -207,12 +204,6 @@ PHRASE : '"' (~('"' | '\n' | '\r' | '\t'))* '"';
 WS     : [ \t\r\n]+ -> skip ;
 NL : (('\r\n')) ;
 
-// Estas dos líneas las he obtenido de internet, con lo cuál unos cuantos alumnos tenemos estas mismas dos líneas para evitar los comentarios
 COMMENT : '~~~' (('*' NL) | ('*' ~('\n' | '\r')) | NL | ~( '\n' | '\r' | '*'))* '~~~' -> skip ;
 
 
-////////////////////////////// COSAS QUE FALTAN POR HACER ///////////////////////////////////
-
-/*
-    - Tengo que conseguir que todos los caracteres se puedan imprimir
- */
